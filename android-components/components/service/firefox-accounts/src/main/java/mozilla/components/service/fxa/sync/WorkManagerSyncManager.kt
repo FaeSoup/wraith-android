@@ -478,10 +478,7 @@ internal class WorkManagerSyncWorker(
             declinedEngines.forEach { setStatus(it, status = false) }
             acceptedEngines.forEach { setStatus(it, status = true) }
         }
-
-        // Process telemetry.
-        syncResult.telemetryJson?.let { SyncTelemetry.processSyncTelemetry(SyncTelemetryPing.fromJSONString(it)) }
-
+        
         // Finally, declare success, failure or request a retry based on 'sync status'.
         return when (syncResult.status) {
             // Happy case.

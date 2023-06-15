@@ -167,7 +167,6 @@ class FxaDeviceConstellation(
             when (outgoingCommand) {
                 is DeviceCommandOutgoing.SendTab -> {
                     account.sendSingleTab(targetDeviceId, outgoingCommand.title, outgoingCommand.url)
-                    SyncTelemetry.processFxaTelemetry(account.gatherTelemetry(), crashReporter)
                 }
                 else -> logger.debug("Skipped sending unsupported command type: $outgoingCommand")
             }
@@ -203,7 +202,6 @@ class FxaDeviceConstellation(
             false
         } else {
             processEvents(events)
-            SyncTelemetry.processFxaTelemetry(account.gatherTelemetry(), crashReporter)
             true
         }
     }

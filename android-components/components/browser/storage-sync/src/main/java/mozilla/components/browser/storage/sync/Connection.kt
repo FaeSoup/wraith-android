@@ -105,14 +105,12 @@ internal object RustPlacesConnection : Connection {
         val api = safeGetApi()
         check(api != null) { "must call init first" }
         val ping = api.syncHistory(syncInfo.into())
-        SyncTelemetry.processHistoryPing(ping)
     }
 
     override fun syncBookmarks(syncInfo: SyncAuthInfo) {
         val api = safeGetApi()
         check(api != null) { "must call init first" }
         val ping = api.syncBookmarks(syncInfo.into())
-        SyncTelemetry.processBookmarksPing(ping)
     }
 
     override fun close() = synchronized(this) {
