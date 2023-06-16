@@ -24,12 +24,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import mozilla.components.support.utils.ext.getParcelableArrayCompat
 import mozilla.components.support.utils.ext.getParcelableCompat
-import org.mozilla.focus.GleanMetrics.OpenWith.ListItemTappedExtra
-import org.mozilla.focus.GleanMetrics.OpenWith.listItemTapped
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.isTablet
 import org.mozilla.focus.open.AppAdapter.OnAppSelectedListener
-import org.mozilla.focus.telemetry.TelemetryWrapper.openFirefoxEvent
 
 /**
  * [AppCompatDialogFragment] used to display open in app options.

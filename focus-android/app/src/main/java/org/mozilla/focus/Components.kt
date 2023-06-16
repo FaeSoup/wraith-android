@@ -70,11 +70,6 @@ import org.mozilla.focus.search.SearchMigration
 import org.mozilla.focus.state.AppState
 import org.mozilla.focus.state.AppStore
 import org.mozilla.focus.state.Screen
-import org.mozilla.focus.telemetry.GleanMetricsService
-import org.mozilla.focus.telemetry.TelemetryMiddleware
-import org.mozilla.focus.telemetry.startuptelemetry.AppStartReasonProvider
-import org.mozilla.focus.telemetry.startuptelemetry.StartupActivityLog
-import org.mozilla.focus.telemetry.startuptelemetry.StartupStateProvider
 import org.mozilla.focus.topsites.DefaultTopSitesStorage
 import org.mozilla.focus.utils.Settings
 import java.util.Locale
@@ -103,12 +98,6 @@ class Components(
             notificationManagerCompat,
         )
     }
-
-    val appStartReasonProvider by lazy { AppStartReasonProvider() }
-
-    val startupActivityLog by lazy { StartupActivityLog() }
-
-    val startupStateProvider by lazy { StartupStateProvider(startupActivityLog, appStartReasonProvider) }
 
     val settings by lazy { Settings(context) }
 
@@ -153,7 +142,6 @@ class Components(
     val store by lazy {
         BrowserStore(
             middleware = listOf(
-                TelemetryMiddleware(),
                 DownloadMiddleware(context, DownloadService::class.java),
                 SanityCheckMiddleware(),
                 // We are currently using the default location service. We should consider using
@@ -209,8 +197,6 @@ class Components(
     val customTabsUseCases: CustomTabsUseCases by lazy { CustomTabsUseCases(store, sessionUseCases.loadUrl) }
 
     val crashReporter: CrashReporter by lazy { createCrashReporter(context, notificationsDelegate) }
-
-    val metrics: GleanMetricsService by lazy { GleanMetricsService(context) }
 
     val experiments: NimbusApi by lazy {
         createNimbus(context, BuildConfig.NIMBUS_ENDPOINT)

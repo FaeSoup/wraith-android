@@ -6,9 +6,7 @@ package org.mozilla.focus.activity
 import android.app.Activity
 import android.os.Bundle
 import mozilla.components.browser.state.selector.privateTabs
-import org.mozilla.focus.GleanMetrics.AppShortcuts
 import org.mozilla.focus.ext.components
-import org.mozilla.focus.telemetry.TelemetryWrapper
 
 class EraseShortcutActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,8 +16,6 @@ class EraseShortcutActivity : Activity() {
 
         val tabCount = components.store.state.privateTabs.size
         AppShortcuts.justEraseButtonTapped.record(AppShortcuts.JustEraseButtonTappedExtra(tabCount))
-
-        TelemetryWrapper.eraseShortcutEvent()
 
         finishAndRemoveTask()
     }

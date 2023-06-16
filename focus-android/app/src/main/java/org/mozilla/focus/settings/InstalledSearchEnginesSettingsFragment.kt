@@ -15,14 +15,12 @@ import mozilla.components.browser.state.state.searchEngines
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.feature.search.SearchUseCases
 import mozilla.components.service.glean.private.NoExtras
-import org.mozilla.focus.GleanMetrics.SearchEngines
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.requireComponents
 import org.mozilla.focus.ext.showToolbar
 import org.mozilla.focus.search.RadioSearchEngineListPreference
 import org.mozilla.focus.state.AppAction
 import org.mozilla.focus.state.Screen
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import kotlin.collections.forEach as withEach
 
 class InstalledSearchEnginesSettingsFragment : BaseSettingsFragment() {
@@ -71,8 +69,6 @@ class InstalledSearchEnginesSettingsFragment : BaseSettingsFragment() {
                     SearchEngines.OpenRemoveScreenExtra(currentEnginesCount),
                 )
 
-                TelemetryWrapper.menuRemoveEnginesEvent()
-
                 true
             }
             R.id.menu_restore_default_engines -> {
@@ -89,7 +85,6 @@ class InstalledSearchEnginesSettingsFragment : BaseSettingsFragment() {
     private fun restoreSearchEngines() {
         restoreSearchDefaults(requireComponents.store, requireComponents.searchUseCases)
         refetchSearchEngines()
-        TelemetryWrapper.menuRestoreEnginesEvent()
         languageChanged = false
     }
 
@@ -100,9 +95,6 @@ class InstalledSearchEnginesSettingsFragment : BaseSettingsFragment() {
                     AppAction.OpenSettings(page = Screen.Settings.Page.SearchAdd),
                 )
                 SearchEngines.addEngineTapped.record(NoExtras())
-
-                TelemetryWrapper.menuAddSearchEngineEvent()
-
                 return true
             }
             else -> {
