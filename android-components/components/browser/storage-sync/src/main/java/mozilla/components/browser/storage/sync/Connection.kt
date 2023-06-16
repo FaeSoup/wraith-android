@@ -9,7 +9,6 @@ import mozilla.appservices.places.PlacesApi
 import mozilla.appservices.places.PlacesReaderConnection
 import mozilla.appservices.places.PlacesWriterConnection
 import mozilla.components.concept.sync.SyncAuthInfo
-import mozilla.components.support.sync.telemetry.SyncTelemetry
 import java.io.Closeable
 import java.io.File
 
