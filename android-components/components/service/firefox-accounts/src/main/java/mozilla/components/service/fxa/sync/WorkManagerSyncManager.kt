@@ -37,7 +37,6 @@ import mozilla.components.service.fxa.manager.SyncEnginesStorage
 import mozilla.components.support.base.log.logger.Logger
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
-import mozilla.components.support.sync.telemetry.SyncTelemetry
 import java.io.Closeable
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
@@ -478,10 +477,7 @@ internal class WorkManagerSyncWorker(
             declinedEngines.forEach { setStatus(it, status = false) }
             acceptedEngines.forEach { setStatus(it, status = true) }
         }
-
-        // Process telemetry.
-        syncResult.telemetryJson?.let { SyncTelemetry.processSyncTelemetry(SyncTelemetryPing.fromJSONString(it)) }
-
+        
         // Finally, declare success, failure or request a retry based on 'sync status'.
         return when (syncResult.status) {
             // Happy case.

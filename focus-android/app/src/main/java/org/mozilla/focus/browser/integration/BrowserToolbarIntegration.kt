@@ -37,8 +37,6 @@ import mozilla.components.lib.state.ext.flowScoped
 import mozilla.components.support.base.feature.LifecycleAwareFeature
 import mozilla.components.support.ktx.android.view.hideKeyboard
 import mozilla.components.support.ktx.kotlinx.coroutines.flow.ifChanged
-import org.mozilla.focus.GleanMetrics.TabCount
-import org.mozilla.focus.GleanMetrics.TrackingProtection
 import org.mozilla.focus.R
 import org.mozilla.focus.cookiebanner.CookieBannerOption
 import org.mozilla.focus.ext.components
@@ -51,7 +49,6 @@ import org.mozilla.focus.menu.browser.CustomTabMenu
 import org.mozilla.focus.nimbus.FocusNimbus
 import org.mozilla.focus.state.AppAction
 import org.mozilla.focus.state.Screen
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.ui.theme.focusTypography
 import org.mozilla.focus.utils.ClickableSubstringLink
 
@@ -100,8 +97,6 @@ class BrowserToolbarIntegration(
         listener = {
             val openedTabs = store.state.tabs.size
             TabCount.eraseButtonTapped.record(TabCount.EraseButtonTappedExtra(openedTabs))
-
-            TelemetryWrapper.eraseEvent()
 
             eraseActionListener.invoke()
         },

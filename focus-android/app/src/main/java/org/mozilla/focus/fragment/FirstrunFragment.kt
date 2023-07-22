@@ -39,7 +39,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
         // We will send a telemetry event whenever a new firstrun page is shown. However this page
         // listener won't fire for the initial page we are showing. So we are going to firing here.
         Onboarding.pageDisplayed.record(Onboarding.PageDisplayedExtra(0))
-        TelemetryWrapper.showFirstRunPageEvent(0)
     }
 
     override fun onCreateView(
@@ -69,15 +68,11 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
             R.id.skip -> {
                 finishFirstrun()
                 Onboarding.skipButtonTapped.record(Onboarding.SkipButtonTappedExtra(currentItem))
-
-                TelemetryWrapper.skipFirstRunEvent()
             }
 
             R.id.finish -> {
                 finishFirstrun()
                 Onboarding.finishButtonTapped.record(Onboarding.FinishButtonTappedExtra(currentItem))
-
-                TelemetryWrapper.finishFirstRunEvent()
             }
 
             else -> throw IllegalArgumentException("Unknown view")
@@ -101,7 +96,6 @@ class FirstrunFragment : Fragment(), View.OnClickListener {
                 object : ViewPager.OnPageChangeListener {
                     override fun onPageSelected(position: Int) {
                         Onboarding.pageDisplayed.record(Onboarding.PageDisplayedExtra(0))
-                        TelemetryWrapper.showFirstRunPageEvent(position)
 
                         contentDescription =
                             firstRunPagerAdapter.getPageAccessibilityDescription(position)

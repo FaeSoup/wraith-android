@@ -26,7 +26,6 @@ import mozilla.components.concept.sync.ServiceResult
 import mozilla.components.support.base.log.logger.Logger
 import mozilla.components.support.base.observer.Observable
 import mozilla.components.support.base.observer.ObserverRegistry
-import mozilla.components.support.sync.telemetry.SyncTelemetry
 import mozilla.appservices.fxaclient.PersistedFirefoxAccount as FirefoxAccount
 
 internal sealed class FxaDeviceConstellationException : Exception() {
@@ -167,7 +166,6 @@ class FxaDeviceConstellation(
             when (outgoingCommand) {
                 is DeviceCommandOutgoing.SendTab -> {
                     account.sendSingleTab(targetDeviceId, outgoingCommand.title, outgoingCommand.url)
-                    SyncTelemetry.processFxaTelemetry(account.gatherTelemetry(), crashReporter)
                 }
                 else -> logger.debug("Skipped sending unsupported command type: $outgoingCommand")
             }
@@ -203,7 +201,6 @@ class FxaDeviceConstellation(
             false
         } else {
             processEvents(events)
-            SyncTelemetry.processFxaTelemetry(account.gatherTelemetry(), crashReporter)
             true
         }
     }

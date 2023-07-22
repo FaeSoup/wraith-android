@@ -11,9 +11,6 @@ import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
 import mozilla.components.lib.auth.canUseBiometricFeature
 import mozilla.components.service.glean.private.NoExtras
-import org.mozilla.focus.GleanMetrics.CookieBanner
-import org.mozilla.focus.GleanMetrics.PrivacySettings
-import org.mozilla.focus.GleanMetrics.TrackingProtectionExceptions
 import org.mozilla.focus.R
 import org.mozilla.focus.cookiebanner.CookieBannerOption
 import org.mozilla.focus.engine.EngineSharedPreferencesListener
@@ -24,7 +21,6 @@ import org.mozilla.focus.nimbus.FocusNimbus
 import org.mozilla.focus.settings.BaseSettingsFragment
 import org.mozilla.focus.state.AppAction
 import org.mozilla.focus.state.Screen
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.widget.CookiesPreference
 
 class PrivacySecuritySettingsFragment :
@@ -100,7 +96,6 @@ class PrivacySecuritySettingsFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         recordTelemetry(key, sharedPreferences.all[key])
-        TelemetryWrapper.settingsEvent(key, sharedPreferences.all[key].toString())
         updateStealthToggleAvailability()
     }
 
@@ -160,8 +155,6 @@ class PrivacySecuritySettingsFragment :
         when (preference.key) {
             resources.getString(R.string.pref_key_screen_exceptions) -> {
                 TrackingProtectionExceptions.allowListOpened.record(NoExtras())
-
-                TelemetryWrapper.openExceptionsListSetting()
 
                 requireComponents.appStore.dispatch(
                     AppAction.OpenSettings(page = Screen.Settings.Page.PrivacyExceptions),

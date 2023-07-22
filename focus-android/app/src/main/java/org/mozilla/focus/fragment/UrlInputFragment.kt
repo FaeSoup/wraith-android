@@ -31,9 +31,6 @@ import mozilla.components.support.ktx.android.view.hideKeyboard
 import mozilla.components.support.ktx.util.URLStringUtils
 import mozilla.components.support.utils.StatusBarUtils
 import mozilla.components.support.utils.ThreadUtils
-import org.mozilla.focus.GleanMetrics.BrowserSearch
-import org.mozilla.focus.GleanMetrics.SearchBar
-import org.mozilla.focus.GleanMetrics.SearchWidget
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.MainActivity
 import org.mozilla.focus.databinding.FragmentUrlinputBinding
@@ -49,7 +46,6 @@ import org.mozilla.focus.searchsuggestions.SearchSuggestionsViewModel
 import org.mozilla.focus.searchsuggestions.ui.SearchSuggestionsFragment
 import org.mozilla.focus.state.AppAction
 import org.mozilla.focus.state.Screen
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.topsites.DefaultTopSitesStorage.Companion.TOP_SITES_MAX_LIMIT
 import org.mozilla.focus.topsites.DefaultTopSitesView
 import org.mozilla.focus.topsites.TopSitesOverlay
@@ -550,8 +546,6 @@ class UrlInputFragment :
                 search(input)
             }
 
-            TelemetryWrapper.urlBarEvent(isUrl)
-
             if (isUrl) {
                 SearchBar.enteredUrl.record(NoExtras())
             } else {
@@ -560,7 +554,6 @@ class UrlInputFragment :
                 SearchBar.performedSearch.record(
                     SearchBar.PerformedSearchExtra(defaultSearchEngineName),
                 )
-                TelemetryWrapper.searchEnterEvent()
                 BrowserSearch.searchCount["$defaultSearchEngineName.action"].add()
             }
         }
@@ -586,8 +579,6 @@ class UrlInputFragment :
                 search(query)
             }
         }
-
-        TelemetryWrapper.searchSelectEvent(isSuggestion)
 
         val defaultSearchEngineName = requireComponents.store.defaultSearchEngineName().lowercase()
         BrowserSearch.searchCount["$defaultSearchEngineName.suggestion"].add()

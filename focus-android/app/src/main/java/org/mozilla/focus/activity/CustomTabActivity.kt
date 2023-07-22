@@ -16,8 +16,6 @@ import org.mozilla.focus.R
 import org.mozilla.focus.ext.components
 import org.mozilla.focus.ext.updateSecureWindowFlags
 import org.mozilla.focus.fragment.BrowserFragment
-import org.mozilla.focus.telemetry.startuptelemetry.StartupPathProvider
-import org.mozilla.focus.telemetry.startuptelemetry.StartupTypeTelemetry
 
 /**
  * The main entry point for "custom tabs" opened by third-party apps.
@@ -27,7 +25,6 @@ class CustomTabActivity : LocaleAwareAppCompatActivity() {
     private lateinit var browserFragment: BrowserFragment
 
     private val startupPathProvider = StartupPathProvider()
-    private lateinit var startupTypeTelemetry: StartupTypeTelemetry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         updateSecureWindowFlags()
@@ -59,9 +56,6 @@ class CustomTabActivity : LocaleAwareAppCompatActivity() {
         }
 
         startupPathProvider.attachOnActivityOnCreate(lifecycle, intent.unsafe)
-        startupTypeTelemetry = StartupTypeTelemetry(components.startupStateProvider, startupPathProvider).apply {
-            attachOnMainActivityOnCreate(lifecycle)
-        }
     }
 
     override fun onPause() {

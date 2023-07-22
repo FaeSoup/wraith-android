@@ -7,7 +7,6 @@ package org.mozilla.focus.autocomplete
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
-import org.mozilla.focus.GleanMetrics.Autocomplete
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.requireComponents
 import org.mozilla.focus.ext.requirePreference
@@ -15,7 +14,6 @@ import org.mozilla.focus.ext.showToolbar
 import org.mozilla.focus.settings.BaseSettingsFragment
 import org.mozilla.focus.state.AppAction
 import org.mozilla.focus.state.Screen
-import org.mozilla.focus.telemetry.TelemetryWrapper
 
 /**
  * Settings UI for configuring autocomplete.
@@ -69,8 +67,6 @@ class AutocompleteSettingsFragment : BaseSettingsFragment(), SharedPreferences.O
         if (key == null || sharedPreferences == null) {
             return
         }
-
-        TelemetryWrapper.settingsEvent(key, sharedPreferences.all[key].toString())
 
         when (key) {
             topSitesAutocomplete.key ->

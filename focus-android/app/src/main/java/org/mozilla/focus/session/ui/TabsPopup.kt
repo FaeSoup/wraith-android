@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import mozilla.components.browser.state.selector.privateTabs
 import mozilla.components.browser.state.state.TabSessionState
 import org.mozilla.focus.Components
-import org.mozilla.focus.GleanMetrics.TabCount
 import org.mozilla.focus.databinding.PopupTabsBinding
 import org.mozilla.focus.state.AppAction
-import org.mozilla.focus.telemetry.TelemetryWrapper
 
 class TabsPopup(
     private val parentView: ViewGroup,
@@ -55,8 +53,6 @@ class TabsPopup(
         super.dismiss()
         val openedTabs = components.store.state.tabs.size
         TabCount.sessionListClosed.record(TabCount.SessionListClosedExtra(openedTabs))
-
-        TelemetryWrapper.closeTabsTrayEvent()
 
         components.appStore.dispatch(AppAction.HideTabs)
     }

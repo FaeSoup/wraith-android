@@ -21,12 +21,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.PreferenceManager
 import mozilla.components.browser.icons.IconRequest
 import mozilla.components.service.glean.private.NoExtras
-import org.mozilla.focus.GleanMetrics.AddToHomeScreen
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.components
 import org.mozilla.focus.shortcut.HomeScreen
 import org.mozilla.focus.shortcut.IconGenerator
-import org.mozilla.focus.telemetry.TelemetryWrapper
 
 /**
  * Fragment displaying a dialog where a user can change the title for a homescreen shortcut
@@ -35,7 +33,6 @@ class AddToHomescreenDialogFragment : DialogFragment() {
 
     @Suppress("LongMethod")
     override fun onCreateDialog(bundle: Bundle?): AlertDialog {
-        AddToHomeScreen.dialogDisplayed.record(NoExtras())
         val url = requireArguments().getString(URL)!!
         val title = requireArguments().getString(TITLE)
         val blockingEnabled = requireArguments().getBoolean(BLOCKING_ENABLED)
@@ -85,10 +82,6 @@ class AddToHomescreenDialogFragment : DialogFragment() {
             parentView.findViewById<Button>(R.id.addtohomescreen_dialog_add)
 
         addToHomescreenDialogCancelButton.setOnClickListener {
-            AddToHomeScreen.cancelButtonTapped.record(NoExtras())
-
-            TelemetryWrapper.cancelAddToHomescreenShortcutEvent()
-
             dismiss()
         }
 
@@ -101,15 +94,6 @@ class AddToHomescreenDialogFragment : DialogFragment() {
                 blockingEnabled,
                 requestDesktop,
             )
-
-            val hasEditedTitle = initialTitle != editableTitle.text.toString().trim { it <= ' ' }
-            AddToHomeScreen.addButtonTapped.record(
-                AddToHomeScreen.AddButtonTappedExtra(
-                    hasEditedTitle = hasEditedTitle,
-                ),
-            )
-
-            TelemetryWrapper.addToHomescreenShortcutEvent()
 
             PreferenceManager.getDefaultSharedPreferences(requireContext()).edit()
                 .putBoolean(

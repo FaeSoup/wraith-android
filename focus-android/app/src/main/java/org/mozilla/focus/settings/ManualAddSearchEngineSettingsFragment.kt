@@ -33,7 +33,6 @@ import mozilla.components.concept.fetch.Request.Redirect.FOLLOW
 import mozilla.components.feature.search.ext.createSearchEngine
 import mozilla.components.service.glean.private.NoExtras
 import mozilla.components.support.ktx.util.URLStringUtils
-import org.mozilla.focus.GleanMetrics.SearchEngines
 import org.mozilla.focus.R
 import org.mozilla.focus.ext.components
 import org.mozilla.focus.ext.requireComponents
@@ -41,7 +40,6 @@ import org.mozilla.focus.ext.settings
 import org.mozilla.focus.ext.showToolbar
 import org.mozilla.focus.search.ManualAddSearchEnginePreference
 import org.mozilla.focus.state.AppAction
-import org.mozilla.focus.telemetry.TelemetryWrapper
 import org.mozilla.focus.utils.SupportUtils
 import org.mozilla.focus.utils.ViewUtils
 import java.io.IOException
@@ -83,9 +81,6 @@ class ManualAddSearchEngineSettingsFragment : BaseSettingsFragment() {
             )
             SupportUtils.openUrlInCustomTab(requireActivity(), learnMoreUrl)
             SearchEngines.learnMoreTapped.record(NoExtras())
-
-            TelemetryWrapper.addSearchEngineLearnMoreEvent()
-
             true
         }
 
@@ -110,8 +105,6 @@ class ManualAddSearchEngineSettingsFragment : BaseSettingsFragment() {
                 }
             } else {
                 SearchEngines.saveEngineTapped.record(SearchEngines.SaveEngineTappedExtra(false))
-
-                TelemetryWrapper.saveCustomSearchEngineEvent(false)
             }
 
             true
@@ -224,7 +217,6 @@ class ManualAddSearchEngineSettingsFragment : BaseSettingsFragment() {
 
     private suspend fun validateSearchEngine(engineName: String, query: String, client: Client) {
         val isValidSearchQuery = isValidSearchQueryURL(client, query)
-        TelemetryWrapper.saveCustomSearchEngineEvent(isValidSearchQuery)
 
         withContext(Dispatchers.Main) {
             if (!isActive) {
